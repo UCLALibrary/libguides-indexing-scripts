@@ -23,7 +23,7 @@ class ElasticLibClient:
 
         es_doc_json = self._create_es_document(libguide)
 
-        op = self.ELASTIC_SEARCH.index(index=self.INDEX, document=es_doc_json)
+        self.ELASTIC_SEARCH.index(index=self.INDEX, document=es_doc_json)
 
     def _create_es_document(self, document_data: dict):
         """Convenience function to convert dict to Elasticsearch friendly document
