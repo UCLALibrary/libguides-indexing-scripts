@@ -97,4 +97,3 @@ class ElasticLibClient:
             return f"https://guides.library.ucla.edu/c.php?g={m1}&p={m2}"
         else:
             return None
-

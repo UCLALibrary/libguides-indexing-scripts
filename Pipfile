@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 beautifulsoup4 = "*"
+elasticsearch = "*"
 html5lib = "*"
+
 
 [dev-packages]
