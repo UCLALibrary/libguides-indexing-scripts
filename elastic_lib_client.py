@@ -19,27 +19,32 @@ class ElasticLibClient:
         self.ELASTIC_SEARCH = Elasticsearch(base_url, api_key=(user_id, api_val))
 
     def send_libguide(self, libguide: dict):
-        libguide["text"] = " ".join(libguide["text"])
-
         es_doc_json = self._create_es_document(libguide)
-
-        self.ELASTIC_SEARCH.index(index=self.INDEX, document=es_doc_json)
+        self.ELASTIC_SEARCH.index(
+            index=self.INDEX, document=es_doc_json, id=libguide["uri"]
+        )
 
     def _create_es_document(self, document_data: dict):
         """Convenience function to convert dict to Elasticsearch friendly document
 
         Any default or common fields to all Elasticsearch docs can be added here.
         """
-        document_data["section"] = "Libguide"
-
+        # Add sectionHandle, to allow targeting of libguide content
+        document_data["sectionHandle"] = "Libguide"
+        # Remove creator, until name handling is improved
+        document_data.pop("creator", None)
         return json.dumps(document_data)
 
     def index_libguides(self):
+        # TODO: Pass path/filespec into this instead of hard-coding.
         HTML_ROOT = "../libguider/data"
         pages = "**/page*.html"
+        # 4 pages, for small tests
+        pages = "710903/page*.html"
 
         p = Path(HTML_ROOT)
         for html_file in sorted(p.glob(pages)):
+            print(f"Indexing {html_file}")
             with open(html_file) as f:
                 # html5lib gives better results than built-in html.parser
                 soup = BeautifulSoup(f, "html5lib")
@@ -66,13 +71,15 @@ class ElasticLibClient:
             data["creator"] = soup.find(name="meta", attrs={"name": "DC.Creator"})[
                 "content"
             ]
-            data["description"] = soup.find(
-                name="meta", attrs={"name": "DC.Description"}
-            )["content"]
-            data["url"] = soup.find(name="meta", attrs={"name": "DC.Identifier"})[
+            data["summary"] = soup.find(name="meta", attrs={"name": "DC.Description"})[
                 "content"
             ]
-            data["text"] = [str for str in soup.body.stripped_strings]
+            data["uri"] = soup.find(name="meta", attrs={"name": "DC.Identifier"})[
+                "content"
+            ]
+            # Combine all "text" from HTML body into one big string.
+            data["fullText"] = " ".join([str for str in soup.body.stripped_strings])
+
         except TypeError:
             # Ignore these: HTML does not have content we want to index
             pass
