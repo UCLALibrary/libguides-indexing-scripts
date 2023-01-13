@@ -9,14 +9,10 @@ from typing import Any
 
 class ElasticLibClient:
     def __init__(
-        self,
-        base_url: str,
-        index_name: str = "index",
-        api_val: str = "",
-        user_id: str = "",
+        self, base_url: str, index_name: str = "index", base64_api_key: str = ""
     ) -> None:
         self.INDEX = index_name
-        self.ELASTIC_SEARCH = Elasticsearch(base_url, api_key=(user_id, api_val))
+        self.ELASTIC_SEARCH = Elasticsearch(base_url, api_key=base64_api_key)
 
     def send_libguide(self, libguide: dict):
         es_doc_json = self._create_es_document(libguide)
