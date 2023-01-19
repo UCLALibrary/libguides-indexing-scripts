@@ -27,12 +27,16 @@ def main():
         index_name=args.index, base_url=args.base_url, base64_api_key=api_keys.API_KEY
     )
 
-    es.index_libguides()
+    # 4 pages, for small tests
+    es.index_libguides(file_spec="710903/page*.html")
+    # Or do a full test indexing of all pages
+    # es.index_libguides()
+
     # For testing, since indexing can still be running when search is done
     es.ELASTIC_SEARCH.indices.refresh()
     document_count = es.ELASTIC_SEARCH.count()["count"]
     print(f"{document_count = }")
-    
+
     resp = es.ELASTIC_SEARCH.search(query={"match_all": {}})
     print("Showing first (up to) 10 titles...")
     for hit in resp["hits"]["hits"]:
