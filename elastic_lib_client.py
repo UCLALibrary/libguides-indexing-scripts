@@ -31,15 +31,19 @@ class ElasticLibClient:
         document_data.pop("creator", None)
         return json.dumps(document_data)
 
-    def index_libguides(self):
-        # TODO: Pass path/filespec into this instead of hard-coding.
-        HTML_ROOT = "../libguider/data"
-        pages = "**/page*.html"
-        # 4 pages, for small tests
-        pages = "710903/page*.html"
+    def index_libguides(
+        self, html_root: str = "../libguider/data", file_spec: str = "**/page*.html"
+    ):
+        """Index HTML LibGuides previously downloaded (via libguider).
 
-        p = Path(HTML_ROOT)
-        for html_file in sorted(p.glob(pages)):
+        Keyword arguments:
+        html_root: Relative path to the directory containing files to index.
+        file_spec: Pattern used to match files to index.
+        Defaults will index all files downloaded by
+        a parallel installation of https://github.com/UCLALibrary/libguider
+        """
+        p = Path(html_root)
+        for html_file in sorted(p.glob(file_spec)):
             print(f"Indexing {html_file}")
             with open(html_file) as f:
                 # html5lib gives better results than built-in html.parser
