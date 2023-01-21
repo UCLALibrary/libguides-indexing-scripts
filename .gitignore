@@ -133,3 +133,9 @@ api_keys.py
 *credentials*
 *secret*
 *password*
+
+# Data files
+.csv
+.tsv
+.json
+.dict

@@ -7,5 +7,6 @@ name = "pypi"
 beautifulsoup4 = "*"
 elasticsearch = "~=7.17"
 html5lib = "*"
+requests = "*"
 
 [dev-packages]
