@@ -135,7 +135,7 @@ api_keys.py
 *password*
 
 # Data files
-.csv
-.tsv
-.json
-.dict
+*.csv
+*.tsv
+*.json
+*.dict
