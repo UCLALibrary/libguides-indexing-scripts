@@ -38,6 +38,17 @@ def main():
         index_name=args.index, base_url=args.base_url, base64_api_key=api_keys.API_KEY
     )
 
+    # Delete all documents from index before indexing current content.
+    # delete_by_query() requires body param, not straight query like search().
+    resp = es.ELASTIC_SEARCH.delete_by_query(
+        index=es.INDEX,
+        conflicts="proceed",
+        refresh=True,
+        wait_for_completion=True,
+        body={"query": {"match_all": {}}},
+    )
+    print(f"Deleted {resp['deleted']} of {resp['total']} documents")
+
     # Do a full indexing of all pages
     es.index_libguides(file_spec=args.file_spec)
     # 4 pages, for small tests
