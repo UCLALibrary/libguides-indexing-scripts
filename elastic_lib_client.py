@@ -8,6 +8,12 @@ from typing import Any
 
 
 class ElasticLibClient:
+    """IMPORTANT:
+    The Elasticsearch API client, by default, acts on *all* indexes the API_KEY
+    can access.  There's no native way to set a single default index.
+    All uses of es.ELASTIC_SEARCH need to specify (index=es.INDEX).
+    """
+
     def __init__(
         self, base_url: str, index_name: str = "index", base64_api_key: str = ""
     ) -> None:
