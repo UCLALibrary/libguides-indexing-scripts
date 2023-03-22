@@ -5,7 +5,10 @@ _show_usage() {
     exit 1
 }
 
-source ./libguides_secrets.cfg
+# Get full absolute path to this running script.
+SCRIPT_PATH=$(dirname $(realpath -s $0))
+# Config file must be in same directory as this script.
+source ${SCRIPT_PATH}/libguides_secrets.cfg
 
 # Required command-line argument to set index
 if [ -z "$1" ]; then
