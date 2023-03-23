@@ -64,7 +64,7 @@ class ElasticLibClient:
                     guide_url = self.get_guide_url_from_path(html_file)
                     print(f"No usable content in {html_file}: see {guide_url}")
 
-    def get_data(self, soup: BeautifulSoup) -> dict[str, Any]:
+    def get_data(self, soup: BeautifulSoup) -> dict:
         """Return selected data from a LibGuide HTML document.
 
         If document does not have the wanted metadata, returns an empty dictionary.
