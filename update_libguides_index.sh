@@ -25,6 +25,9 @@ fi
 # Run libguider to download current guides as HTML files
 echo "Downloading latest LibGuides HTML files into ${LIBGUIDER_DIR}/data..."
 cd ${LIBGUIDER_DIR}
+# Delete previous documents before doing a full fresh harvest;
+# otherwise, documents which no longer exist on LibGuides are never removed.
+rm -rf data/*
 # Make sure virtualenv is up to date first
 pipenv sync
 pipenv run python libguider.py --site_id ${LIBGUIDER_SITE} --api_key ${LIBGUIDER_API_KEY}
