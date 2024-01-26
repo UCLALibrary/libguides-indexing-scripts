@@ -73,7 +73,7 @@ class ElasticLibClient:
         try:
             data["title"] = soup.find(name="meta", attrs={"name": "DC.Title"})[
                 "content"
-            ].removeprefix("Research Guides: ")
+            ].replace("Research Guides: ", "")
             data["creator"] = soup.find(name="meta", attrs={"name": "DC.Creator"})[
                 "content"
             ]
