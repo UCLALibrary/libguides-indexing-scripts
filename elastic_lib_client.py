@@ -4,7 +4,6 @@ import re
 import traceback
 from bs4 import BeautifulSoup
 from pathlib import Path
-from typing import Any
 
 
 class ElasticLibClient:
